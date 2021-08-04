@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  database:
+    image: postgres
+    container_name: database_desafio-06
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=queries_challenge
+    volumes:
+      - pgdata:/data/postgres
+
+  app:
+    build: .
+    container_name: desafio-06
+    restart: always
+    ports:
+      - 3333:3333
+      - 9229:9229
+    volumes:
+      - .:/usr/app
+      - /usr/src/app/node_modules
+    links:
+      - database
+    depends_on:
+      - database
+
+volumes:
+  pgdata:
+    driver: local
